@@ -24,7 +24,9 @@ namespace TurboPac.Models
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-        public int Postcode { get; set; }
+        public Nullable<int> Postcode { get; set; }
         public string Email { get; set; }
+        public string PictureLarge { get; set; }
+        public string PictureMedium { get; set; }
     }
 }

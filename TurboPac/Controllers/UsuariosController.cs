@@ -177,6 +177,10 @@ namespace TurboPac.Controllers
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
+                errores.Add(e.Message);
+                errores.Add(e.InnerException.ToString());
+
+                ViewBag.Errores = errores;
                 result = false;
 
             }
@@ -188,8 +192,13 @@ namespace TurboPac.Controllers
 
             if (!saveTxtData(lines))
             {
-                ViewBag.saveTxt = "El txt tiene errores";
+                errores.Add("El txt tiene errores");
+
+                ViewBag.Errores = errores;
+                return RedirectToAction("Index");
+
             }
+            ViewBag.Messege = "Se agregaron "+ lines.Count() +" usuarios desde un txt";
             return RedirectToAction("Index");
 
         }
@@ -243,13 +252,21 @@ namespace TurboPac.Controllers
                 errores.Add("El renglon " + count + "tiene errores.");
                 if (e != null)
                 {
-                    errores.Add(e.Message + " " + e.InnerException);
+                    errores.Add(e.Message );
 
                 }
+            
                 return false;
 
             }
 
+        }
+
+        public FileResult downloadTXT()
+        {
+            byte[] fileBytes = System.IO.File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory +
+                                @"\Document\LayoutPrueba.txt");
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, "LayoutPrueba.txt");
         }
     }
 }

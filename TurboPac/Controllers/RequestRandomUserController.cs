@@ -18,49 +18,66 @@ namespace TurboPac.Controllers
 
         private UltrapacDataEntities db = new UltrapacDataEntities();
 
+        private List<string> errores = new List<string>();
+
         public async Task<ActionResult> Request()
         {
-            RandomUser EmpInfo = new RandomUser();
-            using (var client = new HttpClient())
+            try
             {
-                //Passing service base url
-                client.BaseAddress = new Uri(Baseurl);
-                client.DefaultRequestHeaders.Clear();
-                //Define request data format
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //Sending request to find web api REST service resource GetAllEmployees using HttpClient
-                HttpResponseMessage Res = await client.GetAsync("");
-                //Checking the response is successful or not which is sent using HttpClient
-                if (Res.IsSuccessStatusCode)
+
+                RandomUser EmpInfo = new RandomUser();
+                using (var client = new HttpClient())
                 {
-                    //Storing the response details recieved from web api
-                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    //Deserializing the response recieved from web api and storing into the Employee list
-                    EmpInfo = JsonConvert.DeserializeObject<RandomUser>(EmpResponse);
+                    //Passing service base url
+                    client.BaseAddress = new Uri(Baseurl);
+                    client.DefaultRequestHeaders.Clear();
+                    //Define request data format
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient
+                    HttpResponseMessage Res = await client.GetAsync("");
+                    //Checking the response is successful or not which is sent using HttpClient
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        //Storing the response details recieved from web api
+                        var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                        //Deserializing the response recieved from web api and storing into the Employee list
+                        EmpInfo = JsonConvert.DeserializeObject<RandomUser>(EmpResponse);
+                    }
+
                 }
 
-            }
+                foreach (var result in EmpInfo.results)
+                {
+                    Usuario usuario = new Usuario();
+                    usuario.Id = Guid.NewGuid();
+                    usuario.Title = result.name.title;
+                    usuario.First = result.name.first;
+                    usuario.Last = result.name.last;
+                    usuario.Email = result.email;
+                    usuario.City = result.location.city;
+                    usuario.Name = result.location.street.name;
+                    usuario.Number = result.location.street.number;
+                    usuario.City = result.location.city;
+                    usuario.State = result.location.state;
+                    usuario.Country = result.location.country;
+                    usuario.Postcode = int.Parse(result.location.postcode);
+                    usuario.Gender = result.gender;
+                    usuario.PictureMedium = result.picture.medium;
+                    usuario.PictureLarge = result.picture.large;
+                    db.Usuario.Add(usuario);
 
-            foreach (var result in EmpInfo.results)
+                }
+                db.SaveChanges();
+                ViewBag.Messege = "Se agrego un usuario desdd web API";
+
+            }
+            catch (Exception e)
             {
-                Usuario usuario = new Usuario();
-                usuario.Id = Guid.NewGuid();
-                usuario.Title = result.name.title;
-                usuario.First = result.name.first;
-                usuario.Last = result.name.last;
-                usuario.Email = result.email;
-                usuario.City = result.location.city;
-                usuario.Name = result.location.street.name;
-                usuario.Number = result.location.street.number;
-                usuario.City = result.location.city;
-                usuario.State = result.location.state;
-                usuario.Country = result.location.country;
-                usuario.Postcode = int.Parse(result.location.postcode);
-                usuario.Gender = result.gender;
-                db.Usuario.Add(usuario);
+                errores.Add(e.Message);   
+                errores.Add(e.InnerException.ToString());
+                ViewBag.Errores = errores;
 
             }
-            db.SaveChanges();
             return RedirectToAction("Index", "Usuarios");
         }
     }

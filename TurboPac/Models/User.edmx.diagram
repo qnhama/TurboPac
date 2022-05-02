@@ -6,6 +6,14 @@
     <edmx:Diagrams>
       <Diagram DiagramId="38235d53cba94b9b92b3a4e587c326e5" Name="Diagram1">
         <EntityTypeShape EntityType="UltrapacDataModel.Usuario" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="UltrapacDataModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="UltrapacDataModel.AspNetRoles" Width="1.5" PointX="3.75" PointY="2.5" />
+        <EntityTypeShape EntityType="UltrapacDataModel.AspNetUserClaims" Width="1.5" PointX="8.25" PointY="1" />
+        <EntityTypeShape EntityType="UltrapacDataModel.AspNetUserLogins" Width="1.5" PointX="8.25" PointY="3.75" />
+        <EntityTypeShape EntityType="UltrapacDataModel.AspNetUsers" Width="1.5" PointX="6" PointY="1.375" />
+        <AssociationConnector Association="UltrapacDataModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="UltrapacDataModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="UltrapacDataModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

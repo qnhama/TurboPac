@@ -18,12 +18,14 @@ namespace TurboPac.Controllers
 
         private List<string> errores = new List<string>();
 
+        [Authorize]
         // GET: Usuarios
         public ActionResult Index()
         {
             return View(db.Usuario.ToList());
         }
 
+        [Authorize]
         // GET: Usuarios/Details/5
         public ActionResult Details(Guid? id)
         {
@@ -39,6 +41,7 @@ namespace TurboPac.Controllers
             return View(usuario);
         }
 
+        [Authorize]
         // GET: Usuarios/Create
         public ActionResult Create()
         {
@@ -63,6 +66,7 @@ namespace TurboPac.Controllers
             return View(usuario);
         }
 
+        [Authorize]
         // GET: Usuarios/Edit/5
         public ActionResult Edit(Guid? id)
         {
@@ -94,6 +98,7 @@ namespace TurboPac.Controllers
             return View(usuario);
         }
 
+        [Authorize]
         // GET: Usuarios/Delete/5
         public ActionResult Delete(Guid? id)
         {
@@ -129,7 +134,7 @@ namespace TurboPac.Controllers
             base.Dispose(disposing);
         }
 
-
+        [Authorize]
         [System.Web.Mvc.HttpPost]
         public ActionResult upload(HttpPostedFileBase file)
         {
@@ -189,6 +194,7 @@ namespace TurboPac.Controllers
 
         }
 
+        [Authorize]
         private bool saveTxtData(List<string> renglones)
         {
             string count = "";
